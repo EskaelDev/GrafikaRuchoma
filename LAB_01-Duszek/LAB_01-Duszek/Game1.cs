@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
 
 namespace LAB_01_Duszek
 {
@@ -12,10 +14,45 @@ namespace LAB_01_Duszek
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Texture2D ghost;
+        Texture2D ghostFoot;
+        Texture2D street;
+        Rectangle backgroundRec;
+        List<Rectangle> ghostRec;
+
+        KeyboardState ks;
+        int points;
+        Random rng;
+
+        int RaindomTime()
+        {
+            return rng.Next(0, 2000);
+        }
+
+        int[] RandomPos()
+        {
+            int[] pos = new int[2];
+            pos[0] = rng.Next(0, GraphicsDevice.Viewport.Width - ghost.Width);
+            pos[1] = rng.Next(0, GraphicsDevice.Viewport.Height - ghost.Height);
+
+            return pos;
+        }
+
+
+
+        string TitleBuilder()
+        {
+            return "Score: " + Convert.ToString(points);
+        }
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+
+            Window.AllowUserResizing = true;
+            
         }
 
         /// <summary>
@@ -27,8 +64,11 @@ namespace LAB_01_Duszek
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            IsMouseVisible = true;
             base.Initialize();
+            points = 0;
+            Window.Title = TitleBuilder();
+            rng = new Random();
         }
 
         /// <summary>
@@ -41,6 +81,10 @@ namespace LAB_01_Duszek
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            ghost = Content.Load<Texture2D>("Graphics/ghost");
+            ghostFoot = Content.Load<Texture2D>("Graphics/ghost-foot");
+            street = Content.Load<Texture2D>("Graphics/street");
+            backgroundRec = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
         }
 
         /// <summary>
@@ -61,8 +105,19 @@ namespace LAB_01_Duszek
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+                
 
             // TODO: Add your update logic here
+            backgroundRec.Width = GraphicsDevice.Viewport.Width;
+            backgroundRec.Height = GraphicsDevice.Viewport.Height;
+
+            ks = Keyboard.GetState();
+            if (ks.IsKeyDown(Keys.Enter))
+                this.Exit();
+
+            
+
+            Window.Title = TitleBuilder();
 
             base.Update(gameTime);
         }
@@ -76,6 +131,11 @@ namespace LAB_01_Duszek
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+
+            spriteBatch.Draw(street, backgroundRec, Color.White);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
