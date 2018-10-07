@@ -70,7 +70,9 @@ namespace LAB_01_Duszek
 
             for (int i = ghosts.Count - 1; i >= 0; i--)
             {
-                if (mouseState.LeftButton == ButtonState.Pressed && ghosts[i].Position.Contains(mousePosition))
+                if (mouseState.LeftButton == ButtonState.Pressed && 
+                    ghosts[i].Position.Contains(mousePosition) &&
+                    ghosts[i].IsHitted == false)
                 {
                     ghosts[i].IsHitted = true;
                     points++;
