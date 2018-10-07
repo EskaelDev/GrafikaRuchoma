@@ -17,25 +17,65 @@ namespace LAB_01_Duszek
         Texture2D ghost;
         Texture2D ghostFoot;
         Texture2D street;
+
         Rectangle backgroundRec;
-        List<Rectangle> ghostRec;
+        List<Ghost> ghosts;
 
         KeyboardState ks;
-        int points;
+        int points, newGhostTimer;
         Random rng;
+        MouseState mouseState;
+        private Point mousePosition;
 
-        int RaindomTime()
+        private const int GhostSize = 50;
+
+
+
+        int RandomGhostX()
         {
-            return rng.Next(0, 2000);
+            return rng.Next(0, GraphicsDevice.Viewport.Width - GhostSize);
+        }
+        int RandomGhostY()
+        {
+            return rng.Next(0, GraphicsDevice.Viewport.Height - GhostSize);
         }
 
-        int[] RandomPos()
+        void AddNewGhost()
         {
-            int[] pos = new int[2];
-            pos[0] = rng.Next(0, GraphicsDevice.Viewport.Width - ghost.Width);
-            pos[1] = rng.Next(0, GraphicsDevice.Viewport.Height - ghost.Height);
+            Ghost ghost = new Ghost();
+            ghost.AppearanceTime = rng.Next(0, 2000);
+            ghost.IsHitted = false;
+            Rectangle ghostRectangle = new Rectangle(RandomGhostX(), RandomGhostY(), GhostSize, GhostSize);
+            ghost.Position = ghostRectangle;
 
-            return pos;
+            ghosts.Add(ghost);
+        }
+
+        void UpdateGhostsAppearanceTime(int deltaTime)
+        {
+            for (int i = ghosts.Count - 1; i >= 0; i--)
+            {
+                ghosts[i].AppearanceTime -= deltaTime;
+
+                if (ghosts[i].AppearanceTime <= 0 && ghosts[i].IsHitted == false)
+                    ghosts.Remove(ghosts[i]);
+            }
+        }
+
+
+        void CheckGhostClick()
+        {
+            mouseState = Mouse.GetState();
+            mousePosition = new Point(mouseState.X, mouseState.Y);
+
+            for (int i = ghosts.Count - 1; i >= 0; i--)
+            {
+                if (mouseState.LeftButton == ButtonState.Pressed && ghosts[i].Position.Contains(mousePosition))
+                {
+                    ghosts[i].IsHitted = true;
+                    points++;
+                }
+            }
         }
 
 
@@ -52,7 +92,7 @@ namespace LAB_01_Duszek
 
 
             Window.AllowUserResizing = true;
-            
+
         }
 
         /// <summary>
@@ -69,6 +109,10 @@ namespace LAB_01_Duszek
             points = 0;
             Window.Title = TitleBuilder();
             rng = new Random();
+
+            ghosts = new List<Ghost>();
+            newGhostTimer = 0;
+
         }
 
         /// <summary>
@@ -105,19 +149,29 @@ namespace LAB_01_Duszek
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-                
+
 
             // TODO: Add your update logic here
             backgroundRec.Width = GraphicsDevice.Viewport.Width;
             backgroundRec.Height = GraphicsDevice.Viewport.Height;
 
-            ks = Keyboard.GetState();
-            if (ks.IsKeyDown(Keys.Enter))
-                this.Exit();
+            if (newGhostTimer <= 0)
+            {
+                AddNewGhost();
+                newGhostTimer = 500;
+            }
 
-            
+            newGhostTimer -= gameTime.ElapsedGameTime.Milliseconds;
+
+            ks = Keyboard.GetState();
+            if (ks.IsKeyDown(Keys.Escape))
+                Exit();
 
             Window.Title = TitleBuilder();
+
+            CheckGhostClick();
+            UpdateGhostsAppearanceTime(gameTime.ElapsedGameTime.Milliseconds);
+
 
             base.Update(gameTime);
         }
@@ -134,6 +188,21 @@ namespace LAB_01_Duszek
             spriteBatch.Begin();
 
             spriteBatch.Draw(street, backgroundRec, Color.White);
+
+            foreach (var ghost_ in ghosts)
+            {
+                if (ghost_.IsHitted)
+                {
+                    spriteBatch.Draw(ghostFoot, ghost_.Position, Color.White);
+                }
+                else
+                {
+                    spriteBatch.Draw(ghost, ghost_.Position, Color.White);
+                }
+
+            }
+
+
 
             spriteBatch.End();
 
