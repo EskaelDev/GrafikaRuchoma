@@ -21,7 +21,6 @@ namespace LAB_01_Duszek
         Rectangle backgroundRec;
         List<Ghost> ghosts;
 
-        KeyboardState ks;
         int points, newGhostTimer;
         Random rng;
         MouseState mouseState;
@@ -165,9 +164,7 @@ namespace LAB_01_Duszek
 
             newGhostTimer -= gameTime.ElapsedGameTime.Milliseconds;
 
-            ks = Keyboard.GetState();
-            if (ks.IsKeyDown(Keys.Escape))
-                Exit();
+
 
             Window.Title = TitleBuilder();
 
