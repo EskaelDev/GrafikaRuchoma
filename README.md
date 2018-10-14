@@ -1,4 +1,5 @@
 # Lab 01
+## Duszek
 ![Ghost game](https://github.com/Natsyu/GrafikaRuchoma/blob/master/ReadmeGifs/Screen.gif)
 ```
 Planszę gry stanowi zadane w postaci pliku graficznego tło. 
@@ -21,3 +22,7 @@ Wymagania szczegółowe:
         aby uzyskać efekt jak na rysunku (w tym przypadku, wymiary duszka wynoszą 50x50 px)
 •	Zabrania się jakichkolwiek modyfikacji zadanych plików graficznych
 ```
+## Numery
+<p align="center">
+  <img src="https://i.imgur.com/C8LOWIX.png" alt="Size Limit example">
+</p>
