@@ -1,6 +1,7 @@
 # Lab 01
 ## Duszek
-![Ghost game](https://github.com/Natsyu/GrafikaRuchoma/blob/master/ReadmeGifs/Screen.gif)
+![Ghost game](https://github.com/Natsyu/GrafikaRuchoma/blob/master/ReadmeGifs/lab_01-duszek.gif)
+#### Tresc
 ```
 Planszę gry stanowi zadane w postaci pliku graficznego tło. 
 Tło powinno zajmować cały dostępny obszar okna. 
@@ -22,8 +23,12 @@ Wymagania szczegółowe:
         aby uzyskać efekt jak na rysunku (w tym przypadku, wymiary duszka wynoszą 50x50 px)
 •	Zabrania się jakichkolwiek modyfikacji zadanych plików graficznych
 ```
+
+
 ## Liczby
 ![numbers](https://github.com/Natsyu/GrafikaRuchoma/blob/master/ReadmeGifs/lab_01-liczby.gif)
+#### Tresc
 <p align="center">
   <img src="https://i.imgur.com/C8LOWIX.png" alt="Size Limit example">
 </p>
+
