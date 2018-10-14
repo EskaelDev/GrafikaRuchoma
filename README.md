@@ -22,7 +22,8 @@ Wymagania szczegółowe:
         aby uzyskać efekt jak na rysunku (w tym przypadku, wymiary duszka wynoszą 50x50 px)
 •	Zabrania się jakichkolwiek modyfikacji zadanych plików graficznych
 ```
-## Numery
+## Liczby
+![numbers](https://github.com/Natsyu/GrafikaRuchoma/blob/master/ReadmeGifs/lab_01-liczby.gif)
 <p align="center">
   <img src="https://i.imgur.com/C8LOWIX.png" alt="Size Limit example">
 </p>
