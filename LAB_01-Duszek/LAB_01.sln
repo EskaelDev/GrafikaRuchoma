@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAB_01-Duszek", "LAB_01-Duszek\LAB_01-Duszek.csproj", "{6C25FD1F-A36D-4934-BAA1-A1E0D1643FEF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LAB_01-Liczby", "LAB_01-Liczby\LAB_01-Liczby.csproj", "{C82C3A7C-7092-41FB-9D08-DD9E157C18DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -15,6 +17,10 @@ Global
 		{6C25FD1F-A36D-4934-BAA1-A1E0D1643FEF}.Debug|x86.Build.0 = Debug|x86
 		{6C25FD1F-A36D-4934-BAA1-A1E0D1643FEF}.Release|x86.ActiveCfg = Release|x86
 		{6C25FD1F-A36D-4934-BAA1-A1E0D1643FEF}.Release|x86.Build.0 = Release|x86
+		{C82C3A7C-7092-41FB-9D08-DD9E157C18DD}.Debug|x86.ActiveCfg = Debug|x86
+		{C82C3A7C-7092-41FB-9D08-DD9E157C18DD}.Debug|x86.Build.0 = Debug|x86
+		{C82C3A7C-7092-41FB-9D08-DD9E157C18DD}.Release|x86.ActiveCfg = Release|x86
+		{C82C3A7C-7092-41FB-9D08-DD9E157C18DD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
