@@ -1,7 +1,7 @@
 # Lab 01
 ## Duszek
 ![Ghost game](https://github.com/Natsyu/GrafikaRuchoma/blob/master/ReadmeGifs/lab_01-duszek.gif)
-#### Tresc
+#### Treść
 ```
 Planszę gry stanowi zadane w postaci pliku graficznego tło. 
 Tło powinno zajmować cały dostępny obszar okna. 
@@ -27,8 +27,26 @@ Wymagania szczegółowe:
 
 ## Liczby
 ![numbers](https://github.com/Natsyu/GrafikaRuchoma/blob/master/ReadmeGifs/lab_01-liczby.gif)
-#### Tresc
+#### Treść
 <p align="center">
   <img src="https://i.imgur.com/C8LOWIX.png" alt="Size Limit example">
 </p>
 
+# Lab 02
+## Pong
+#### Treść
+```
+•	naciśnięcie [Escape] kończy program,
+•	zakłada się brak możliwości zmiany rozmiaru okna gry,
+•	klawisz [Spacja] rozpoczyna rozgrywkę,
+•	wektor prędkości piłki ma być modyfikowany w sposób zależny od obszaru uderzenia w rakietę (uwzględnia się przy tym podział paletki na 5 sektorów),
+•	aktualny wynik punktowy ma być wyświetlany w górnej, środkowej części ekranu (jak na rysunku),
+•	sterowanie rakietami odbywa się za pomocą klawiatury, przy czym:
+•	Gracz1: góra - [Q], dół - [A].
+•	Gracz2: góra - [P], dół - [L],
+•	podczas detekcji kolizji piłki z krawędziami ekranu oraz rakietami należy uwzględnić margines (offset) wynoszący 10px
+•	należy zaimplementować animcję sprite'a piłki (zgodnie z arkuszem animacji piłki), uwzględniając przy tym kontrolę prędkości animacji, z 
+•	możliwością jej modyfikacji przez programistę, np.każda klatka wyświetlana przez 16ms,
+•	kolizja piłki z pionową krawędzią ekranu ma zakończyć się animacją pojedyńczej sekwencji klatek, zgodnie z arkuszem animacji eksplozji,
+•	kolizja piłki z rakietą powinna skutkować wyraźnym (300ms) "podświetleniem" sprite'a danej rakiety.
+```
