@@ -12,10 +12,92 @@ namespace Pong
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+
+        private Texture2D ballAnimationTexture2D, backgroundTexture2D, leftPaddleTexture2D, righPaddleTexture2D, explosionAnimationTexture2D;
+        private Rectangle backgroundRectangle;
+        private Paddle leftPaddle, rightPaddle;
+        private Ball ball;
+        private SpriteFont font;
+        private Score LeftScore { get; set; }
+        private Score RightScore { get; set; }
+
+        private bool play = false;
+
+
+
+
+        void ResponseToInput()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Q))
+            {
+                leftPaddle.MoveUP();
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+            {
+                leftPaddle.MoveDown(GraphicsDevice.Viewport.Height);
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.P))
+            {
+                rightPaddle.MoveUP();
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.L))
+            {
+                rightPaddle.MoveDown(GraphicsDevice.Viewport.Height);
+            }
+        }
+
+        void CheckCollisions(GameTime gameTime)
+        {
+            /*            if (ball.CheckCollisonWithPaddle(leftPaddle.body))
+                        {
+                            leftPaddle.Hit();
+                        }
+                        leftPaddle.CheckIfHitted(gameTime);
+
+                        if (ball.CheckCollisonWithPaddle(rightPaddle.body))
+                        {
+                            rightPaddle.Hit();
+                        }*/
+            if (leftPaddle.CheckCollisionWithBall( ball))
+            {
+                leftPaddle.Hit();
+            }
+            else
+            if (rightPaddle.CheckCollisionWithBall( ball))
+            {
+                rightPaddle.Hit();
+            }
+
+            rightPaddle.CheckIfHitted(gameTime);
+
+            if (ball.CheckCollisionWithWall(0, GraphicsDevice.Viewport.Width) == 'l')
+            {
+                RightScore.AddPoint();
+                ball.DestroyBall(gameTime);
+
+                play = false;
+            }
+            else if (ball.CheckCollisionWithWall(0, GraphicsDevice.Viewport.Width) == 'r')
+            {
+                LeftScore.AddPoint();
+                ball.DestroyBall(gameTime);
+
+                play = false;
+            }
+
+            ball.BounceFromWall(GraphicsDevice.Viewport.Height);
+        }
+
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -41,6 +123,25 @@ namespace Pong
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            ballAnimationTexture2D = Content.Load<Texture2D>("graphics/ball-anim");
+            backgroundTexture2D = Content.Load<Texture2D>("graphics/pongBackground");
+            leftPaddleTexture2D = Content.Load<Texture2D>("graphics/paddle1a");
+            righPaddleTexture2D = Content.Load<Texture2D>("graphics/paddle2a");
+            explosionAnimationTexture2D = Content.Load<Texture2D>("graphics/explosion64");
+            font = Content.Load<SpriteFont>("fonts/font");
+
+            backgroundRectangle = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+
+            leftPaddle = new Paddle(leftPaddleTexture2D, new Vector2(5, GraphicsDevice.Viewport.Height / 2 - leftPaddleTexture2D.Height / 2));
+            rightPaddle = new Paddle(righPaddleTexture2D, new Vector2(GraphicsDevice.Viewport.Width - leftPaddleTexture2D.Width - 5, GraphicsDevice.Viewport.Height / 2 - leftPaddleTexture2D.Height / 2));
+            ball = new Ball(ballAnimationTexture2D,
+                            explosionAnimationTexture2D,
+                            GraphicsDevice.Viewport.Width / 2 - ballAnimationTexture2D.Width / 16 / 2,
+                            GraphicsDevice.Viewport.Height / 2 - ballAnimationTexture2D.Height / 5 / 2);
+
+            LeftScore = new Score(font, new Vector2(GraphicsDevice.Viewport.Width / 2 - 50, 30));
+            RightScore = new Score(font, new Vector2(GraphicsDevice.Viewport.Width / 2 + 30, 30));
         }
 
         /// <summary>
@@ -64,6 +165,26 @@ namespace Pong
 
             // TODO: Add your update logic here
 
+            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+                play = true;
+
+            ball.AnimateBall(gameTime);
+            if (ball.isDestroyed)
+            {
+                ball.AnimateExplosion(gameTime);
+            }
+            if (play)
+            {
+                CheckCollisions(gameTime);
+                ball.Move();
+
+                ResponseToInput();
+
+
+                rightPaddle.CheckIfHitted(gameTime);
+                leftPaddle.CheckIfHitted(gameTime);
+            }
+
             base.Update(gameTime);
         }
 
@@ -76,7 +197,24 @@ namespace Pong
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
 
+
+
+            spriteBatch.Draw(backgroundTexture2D, backgroundRectangle, Color.White);
+
+
+            rightPaddle.Draw(spriteBatch);
+            leftPaddle.Draw(spriteBatch);
+            LeftScore.Draw(spriteBatch);
+            RightScore.Draw(spriteBatch);
+
+            ball.DrawBall(spriteBatch);
+
+            if (ball.isDestroyed)
+                ball.DrawExplosion(spriteBatch);
+
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }
