@@ -34,6 +34,7 @@ Wymagania szczegółowe:
 
 # Lab 02
 ## Pong
+![pong](https://github.com/Natsyu/GrafikaRuchoma/blob/master/ReadmeGifs/lab_02-pong.gif)
 #### Treść
 ```
 •	naciśnięcie [Escape] kończy program,
@@ -50,4 +51,3 @@ Wymagania szczegółowe:
 •	kolizja piłki z pionową krawędzią ekranu ma zakończyć się animacją pojedyńczej sekwencji klatek, zgodnie z arkuszem animacji eksplozji,
 •	kolizja piłki z rakietą powinna skutkować wyraźnym (300ms) "podświetleniem" sprite'a danej rakiety.
 ```
-![pong](https://github.com/Natsyu/GrafikaRuchoma/blob/master/ReadmeGifs/lab_02-pong.gif)
