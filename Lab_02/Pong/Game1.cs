@@ -61,32 +61,35 @@ namespace Pong
                         {
                             rightPaddle.Hit();
                         }*/
-            if (leftPaddle.CheckCollisionWithBall( ball))
+            if (leftPaddle.CheckCollisionWithBall(ball))
             {
                 leftPaddle.Hit();
             }
             else
-            if (rightPaddle.CheckCollisionWithBall( ball))
+            if (rightPaddle.CheckCollisionWithBall(ball))
             {
                 rightPaddle.Hit();
             }
+            else
+            {
+                if (ball.CheckCollisionWithWall(0, GraphicsDevice.Viewport.Width) == 'l')
+                {
+                    RightScore.AddPoint();
+                    ball.DestroyBall(gameTime, GraphicsDevice.Viewport.Width);
 
+                    play = false;
+                }
+                else if (ball.CheckCollisionWithWall(0, GraphicsDevice.Viewport.Width) == 'r')
+                {
+                    LeftScore.AddPoint();
+                    ball.DestroyBall(gameTime, GraphicsDevice.Viewport.Width);
+
+                    play = false;
+                }
+            }
             rightPaddle.CheckIfHitted(gameTime);
 
-            if (ball.CheckCollisionWithWall(0, GraphicsDevice.Viewport.Width) == 'l')
-            {
-                RightScore.AddPoint();
-                ball.DestroyBall(gameTime);
 
-                play = false;
-            }
-            else if (ball.CheckCollisionWithWall(0, GraphicsDevice.Viewport.Width) == 'r')
-            {
-                LeftScore.AddPoint();
-                ball.DestroyBall(gameTime);
-
-                play = false;
-            }
 
             ball.BounceFromWall(GraphicsDevice.Viewport.Height);
         }
@@ -133,8 +136,8 @@ namespace Pong
 
             backgroundRectangle = new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
 
-            leftPaddle = new Paddle(leftPaddleTexture2D, new Vector2(5, GraphicsDevice.Viewport.Height / 2 - leftPaddleTexture2D.Height / 2));
-            rightPaddle = new Paddle(righPaddleTexture2D, new Vector2(GraphicsDevice.Viewport.Width - leftPaddleTexture2D.Width - 5, GraphicsDevice.Viewport.Height / 2 - leftPaddleTexture2D.Height / 2));
+            leftPaddle = new Paddle(leftPaddleTexture2D, new Vector2(5, GraphicsDevice.Viewport.Height / 2 - leftPaddleTexture2D.Height / 2), 'l');
+            rightPaddle = new Paddle(righPaddleTexture2D, new Vector2(GraphicsDevice.Viewport.Width - leftPaddleTexture2D.Width - 5, GraphicsDevice.Viewport.Height / 2 - leftPaddleTexture2D.Height / 2), 'r');
             ball = new Ball(ballAnimationTexture2D,
                             explosionAnimationTexture2D,
                             GraphicsDevice.Viewport.Width / 2 - ballAnimationTexture2D.Width / 16 / 2,
@@ -172,6 +175,8 @@ namespace Pong
             if (ball.isDestroyed)
             {
                 ball.AnimateExplosion(gameTime);
+                leftPaddle.SetStartPosition();
+                rightPaddle.SetStartPosition();
             }
             if (play)
             {
@@ -213,6 +218,8 @@ namespace Pong
 
             if (ball.isDestroyed)
                 ball.DrawExplosion(spriteBatch);
+
+            // leftPaddle.DrawFragments(spriteBatch);
 
             spriteBatch.End();
             base.Draw(gameTime);

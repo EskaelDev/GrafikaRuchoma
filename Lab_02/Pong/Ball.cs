@@ -43,7 +43,7 @@ namespace Pong
 
             GameStartX = x;
             GameStartY = y;
-            speed = 3;
+            speed = 5;
             isDestroyed = false;
 
             body = new Rectangle(GameStartX, GameStartY, BallFrameXOffset, BallFrameYOffset);
@@ -78,12 +78,12 @@ namespace Pong
                 directionVector2.X -= speed * 0.3f;
             }
 
-/*            if (directionVector2.Y >= 0)
-                directionVector2.Y += speed * 0.1f;
-            else
-            {
-                directionVector2.Y -= speed * 0.1f;
-            }*/
+            /*            if (directionVector2.Y >= 0)
+                            directionVector2.Y += speed * 0.1f;
+                        else
+                        {
+                            directionVector2.Y -= speed * 0.1f;
+                        }*/
 
         }
 
@@ -99,11 +99,17 @@ namespace Pong
 
                 if (directionVector2.Y == 0.0f)
                     directionVector2.Y = -speed;
+                Accelerate();
+                return;
+
             }
 
             if (p == 3)
             {
                 directionVector2.Y = 0.00f;
+                Accelerate();
+
+                return;
             }
 
             if (p == 5)
@@ -114,9 +120,11 @@ namespace Pong
                 }
                 if (directionVector2.Y == 0.0f)
                     directionVector2.Y = speed;
+                Accelerate();
+                return;
             }
-
             Accelerate();
+            return;
         }
 
         public void BounceFromWall(int bound)
@@ -139,10 +147,17 @@ namespace Pong
             }
         }*/
 
-        public void DestroyBall(GameTime time)
+        public void DestroyBall(GameTime time, int bound)
         {
             isDestroyed = true;
-            explosionVector2 = new Vector2(body.X, body.Y);
+            if (body.X > bound)
+                explosionVector2 = new Vector2(bound - body.X, body.Y);
+            else
+            if (body.X < 0)
+                explosionVector2 = new Vector2(0, body.Y);
+            else
+                explosionVector2 = new Vector2(body.X, body.Y);
+
             ResetBall();
         }
 

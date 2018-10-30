@@ -14,30 +14,53 @@ namespace Pong
         private int hitTime;
         private int hitTimeElapsed;
 
+        private char side;
+
+        private Vector2 startPosition;
+
         private Rectangle topOuterFragment, topInnerFragment, innerFragment, botInnerFragment, botOuterFragment;
+        private int fragmentXOffset;
 
 
-
-        public Paddle(Texture2D texture2D, Vector2 position)
+        public Paddle(Texture2D texture2D, Vector2 position, char side)
         {
             this.texture2D = texture2D;
-            body = new Rectangle((int)position.X, (int)position.Y, texture2D.Width, texture2D.Height);
+            startPosition = position;
+            body = new Rectangle((int)startPosition.X, (int)startPosition.Y, texture2D.Width, texture2D.Height);
+            this.side = side;
 
             isHitted = false;
             speed = 4;
             hitTime = 300;
             hitTimeElapsed = hitTime;
+            fragmentXOffset = 400;
 
         }
 
+        public void SetStartPosition()
+        {
+            body.X = (int)startPosition.X;
+            body.Y = (int)startPosition.Y;
+        }
 
         private void SetFragments()
         {
-            topOuterFragment = new Rectangle(body.X, body.Y, body.Width, body.Height / 5);
-            topInnerFragment = new Rectangle(body.X, body.Y + 1 * body.Height / 5, body.Width, body.Height / 5);
-            innerFragment = new Rectangle(body.X, body.Y + 2 * body.Height / 5, body.Width, body.Height / 5);
-            botInnerFragment = new Rectangle(body.X, body.Y + 3 * body.Height / 5, body.Width, body.Height / 5);
-            botOuterFragment = new Rectangle(body.X, body.Y + 4 * body.Height / 5, body.Width, body.Height / 5);
+            if (side == 'l')
+            {
+                topOuterFragment = new Rectangle(body.X - fragmentXOffset, body.Y, body.Width + fragmentXOffset, body.Height / 5);
+                topInnerFragment = new Rectangle(body.X - fragmentXOffset, body.Y + 1 * body.Height / 5, body.Width + fragmentXOffset, body.Height / 5);
+                innerFragment = new Rectangle(body.X - fragmentXOffset, body.Y + 2 * body.Height / 5, body.Width + fragmentXOffset, body.Height / 5);
+                botInnerFragment = new Rectangle(body.X - fragmentXOffset, body.Y + 3 * body.Height / 5, body.Width + fragmentXOffset, body.Height / 5);
+                botOuterFragment = new Rectangle(body.X - fragmentXOffset, body.Y + 4 * body.Height / 5, body.Width + fragmentXOffset, body.Height / 5);
+            }
+            if (side == 'r')
+            {
+                topOuterFragment = new Rectangle(body.X, body.Y, body.Width + fragmentXOffset, body.Height / 5);
+                topInnerFragment = new Rectangle(body.X, body.Y + 1 * body.Height / 5, body.Width + fragmentXOffset, body.Height / 5);
+                innerFragment = new Rectangle(body.X, body.Y + 2 * body.Height / 5, body.Width + fragmentXOffset, body.Height / 5);
+                botInnerFragment = new Rectangle(body.X, body.Y + 3 * body.Height / 5, body.Width + fragmentXOffset, body.Height / 5);
+                botOuterFragment = new Rectangle(body.X, body.Y + 4 * body.Height / 5, body.Width + fragmentXOffset, body.Height / 5);
+            }
         }
         /*void UpdateBody()
         {
@@ -45,7 +68,7 @@ namespace Pong
             body.Y = (int)position.Y;
         }*/
 
-        public bool CheckCollisionWithBall( Ball ball)
+        public bool CheckCollisionWithBall(Ball ball)
         {
 
             if (ball.CollisonBody.Intersects(topOuterFragment))
@@ -129,6 +152,16 @@ namespace Pong
             {
                 spriteBatch.Draw(texture2D, new Vector2(body.X, body.Y), Color.Bisque);
             }
+        }
+
+        public void DrawFragments(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture2D, topOuterFragment, Color.Red);
+            spriteBatch.Draw(texture2D, topInnerFragment, Color.Blue);
+            spriteBatch.Draw(texture2D, innerFragment, Color.Black);
+            spriteBatch.Draw(texture2D, botInnerFragment, Color.Yellow);
+            spriteBatch.Draw(texture2D, botOuterFragment, Color.Green);
+
         }
     }
 }
