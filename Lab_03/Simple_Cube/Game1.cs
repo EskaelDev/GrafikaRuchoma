@@ -12,18 +12,23 @@ namespace Simple_Cube
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Matrix worldMatrix, viewMatrix, projectrionMatrix;
+
+        BasicEffect basicEffect;                    //programy cieniujace
+        float angleX = 0.0f, angleY = 0.0f, scale = 1.0f, rotatnionZ = 2.0f;
+
+        private Cube cube, cube2;
+
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            this.IsMouseVisible = true;
+            this.Window.AllowUserResizing = true;
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -31,32 +36,28 @@ namespace Simple_Cube
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
+
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            basicEffect = new BasicEffect(GraphicsDevice);
+            basicEffect.VertexColorEnabled = true;
+            cube = new Cube(new Vector3(-1,-1,-1), Color.Red, Color.Blue, Color.Yellow, Color.Green, Color.White,  Color.Crimson, Color.Azure, Color.Cyan, Color.Orange,Color.DarkOliveGreen, Color.LightPink, Color.DarkOrchid, 1 );
+
+            cube2 = new Cube(new Vector3(-2, 0, 0), Color.White, 1);
+
+
             // TODO: use this.Content to load your game content here
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -64,18 +65,66 @@ namespace Simple_Cube
 
             // TODO: Add your update logic here
 
+            // rotation
+            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+                angleY += 0.02f;
+            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+                angleY -= 0.02f;
+            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                angleX += 0.02f;
+            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                angleX -= 0.02f;
+            // zoom
+            if (Keyboard.GetState().IsKeyDown(Keys.P))
+                scale += 0.02f;
+            if (Keyboard.GetState().IsKeyDown(Keys.L))
+                scale -= 0.02f;
+
+
+            Matrix scaleMatrix = Matrix.CreateScale(scale);
+            rotatnionZ += 1f;
+            cube.Rotate(rotatnionZ);
+
+            worldMatrix = Matrix.Identity * scaleMatrix;
+
+
+            // polozenie kamery
+            viewMatrix = Matrix.CreateLookAt(
+                new Vector3(0.0f, 0.0f, 4.0f),
+                Vector3.Zero,
+                Vector3.Up);
+
+
+            // obrot kamery
+            viewMatrix = Matrix.CreateRotationX(angleX) * Matrix.CreateRotationY(angleY) * viewMatrix;
+
+            projectrionMatrix = Matrix.CreatePerspectiveFieldOfView(
+                MathHelper.ToRadians(50),
+                graphics.GraphicsDevice.Viewport.AspectRatio,
+                0.1f,
+                1000.0f);
+
+
+            // update parametrow shadera
+            basicEffect.World = worldMatrix;
+            basicEffect.View = viewMatrix;
+            basicEffect.Projection = projectrionMatrix;
+
+
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            basicEffect.CurrentTechnique.Passes[0].Apply(); // uruchamia shader
+
+            cube.DrawCube(GraphicsDevice);
+
+            cube2.DrawCube(GraphicsDevice);
+
 
             base.Draw(gameTime);
         }
