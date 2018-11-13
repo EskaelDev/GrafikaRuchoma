@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Linq;
 
 namespace Simple_Cube
 {
@@ -188,13 +187,26 @@ namespace Simple_Cube
 
         public void Rotate(float angle)
         {
+            //var rotationCenter = new Vector3(0.5f, 0.5f, 0.5f);
 
-            Matrix transform = Matrix.CreateRotationY(MathHelper.ToRadians(angle));
+            //Matrix transformation = Matrix.CreateTranslation(-rotationCenter)
+
+            //                        * Matrix.CreateRotationY(rotation)
+            //                        * Matrix.CreateTranslation(FrontWallTopLeftPosition);
+
+
+            Matrix rotation = Matrix.Identity;
+            Matrix transform = Matrix.CreateFromAxisAngle(rotation.Up, MathHelper.ToRadians(angle));
+            //transform.Translation = new Vector3(0, 0, 0);
+
             for (int i = 0; i < tops.Length; i++)
             {
                 userPrimitives[i].Position = Vector3.Transform(tops[i].Position, transform);
             }
+            
+
         }
+
 
     }
 }

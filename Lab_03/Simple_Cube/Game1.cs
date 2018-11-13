@@ -25,8 +25,8 @@ namespace Simple_Cube
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            this.IsMouseVisible = true;
-            this.Window.AllowUserResizing = true;
+            IsMouseVisible = true;
+            Window.AllowUserResizing = true;
         }
 
         protected override void Initialize()
@@ -44,7 +44,9 @@ namespace Simple_Cube
 
             basicEffect = new BasicEffect(GraphicsDevice);
             basicEffect.VertexColorEnabled = true;
-            cube = new Cube(new Vector3(-1,-1,-1), Color.Red, Color.Blue, Color.Yellow, Color.Green, Color.White,  Color.Crimson, Color.Azure, Color.Cyan, Color.Orange,Color.DarkOliveGreen, Color.LightPink, Color.DarkOrchid, 1 );
+            cube = new Cube(new Vector3(-1, 1, 1), Color.Red, Color.Blue, Color.Yellow, Color.Green, Color.White, Color.Crimson, Color.Azure, Color.Cyan, Color.Orange, Color.DarkOliveGreen, Color.LightPink, Color.DarkOrchid, 2);
+
+
 
             cube2 = new Cube(new Vector3(-2, 0, 0), Color.White, 1);
 
@@ -80,6 +82,18 @@ namespace Simple_Cube
             if (Keyboard.GetState().IsKeyDown(Keys.L))
                 scale -= 0.02f;
 
+
+            cube.TopWall.polygonTop.color2 = Color.Black;
+            cube.TopWall.polygonTop.color3 = Color.Black;
+            cube.TopWall.polygonTop.color1 = Color.Black;
+
+            cube.FrontWall.polygonTop.color2 = Color.Black;
+            cube.FrontWall.polygonTop.color3 = Color.Black;
+            cube.FrontWall.polygonTop.color1 = Color.Black;
+
+            cube.TopWall.polygonTop.color2 = Color.Black;
+            cube.TopWall.polygonTop.color3 = Color.Black;
+            cube.TopWall.polygonTop.color1 = Color.Black;
 
             Matrix scaleMatrix = Matrix.CreateScale(scale);
             rotatnionZ += 1f;
@@ -123,7 +137,7 @@ namespace Simple_Cube
 
             cube.DrawCube(GraphicsDevice);
 
-            cube2.DrawCube(GraphicsDevice);
+            //cube2.DrawCube(GraphicsDevice);
 
 
             base.Draw(gameTime);
